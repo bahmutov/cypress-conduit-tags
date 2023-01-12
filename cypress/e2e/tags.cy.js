@@ -37,3 +37,35 @@ it('shows the tags returned by the server', () => {
       })
     })
 })
+
+it('bonus: shows the tags returned by the stub', () => {
+  // the application makes a call that gets redirected
+  // so let's stub the final network call
+  const tags = ['tag1', 'tag2', 'tag3']
+  cy.intercept(
+    {
+      method: 'GET',
+      hostname: 'api.realworld.io',
+      pathname: '/api/tags',
+    },
+    { delay: 1000, body: { tags } },
+  ).as('tags')
+  cy.visit('/')
+  // the application shows the loading tags text
+  cy.get('.sidebar').within(() => {
+    cy.contains('Loading tags').should('be.visible')
+    // and then it hides
+    cy.contains('Loading tags').should('not.be.visible')
+  })
+  // confirm our network stub was used
+  cy.wait('@tags')
+  // we know the tags already, let's confirm they are shown
+  cy.get('.sidebar .tag-list').within(() => {
+    cy.get('.tag-pill').should('have.length', tags.length)
+    tags.forEach((tag) => {
+      // we do not care for the order of tags,
+      // just the text should be there
+      cy.contains('.tag-pill', tag).should('be.visible')
+    })
+  })
+})
