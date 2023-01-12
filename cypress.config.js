@@ -5,6 +5,6 @@ module.exports = defineConfig({
     // baseUrl, etc
     baseUrl: 'https://angular.realworld.io/',
     supportFile: false,
-    fixturesFolder: null,
+    fixturesFolder: false,
   },
 })
