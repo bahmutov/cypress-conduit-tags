@@ -2,4 +2,9 @@
 // https://on.cypress.io/intelligent-code-completion
 /// <reference types="cypress" />
 
-it('shows the tags returned by the server', () => {})
+// figure out how the tags get to the web application
+// and confirm the Tags show every returned tag item
+// (nothing is missing, and there are no extras)
+it('shows the tags returned by the server', () => {
+  cy.visit('/')
+})
